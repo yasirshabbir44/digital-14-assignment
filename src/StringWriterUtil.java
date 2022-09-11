@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.Arrays;
 import java.util.Optional;
 
 public class StringWriterUtil implements Closeable {
@@ -8,9 +9,9 @@ public class StringWriterUtil implements Closeable {
 
     private static final String REGEX_DUPLICATE = "(?i)\\b(\\w+)(\\b\\W+\\1\\b)+";
 
-    public StringWriterUtil() throws IOException {
+    public StringWriterUtil(String val) throws IOException {
         bufferedWriter = new BufferedWriter(new FileWriter("myfile.dat"));;
-        stringBuffer = new StringBuffer();
+        stringBuffer = new StringBuffer(val);
     }
 
 
@@ -59,12 +60,32 @@ public class StringWriterUtil implements Closeable {
     }
 
 
+
+    public void removeStupid(){
+       this.stringBuffer = new StringBuffer(this.stringBuffer.toString().replace("stupid","s*****"));
+    }
     public void write(String value) throws IOException {
         bufferedWriter.write(value);
     }
 
+
+    public String getValue(){
+        return this.stringBuffer.toString();
+    }
     @Override
     public void close() throws IOException {
        bufferedWriter.close();
+    }
+
+
+    public static void main(String[] args) throws IOException {
+        StringWriterUtil test = new StringWriterUtil("This is really really stupid!!!");
+
+        test.duplicateRemover();
+        test.removeStupid();
+
+
+        System.out.println(test.getValue());
+
     }
 }
